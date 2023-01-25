@@ -44,8 +44,9 @@ func (l *fmtLogger) LogResponse(method string, dump []byte) {
 
 // Config config the Client
 type Config struct {
-	Dump   bool
-	Logger DumpLogger
+	Dump            bool
+	Logger          DumpLogger
+	PrefixOperation bool
 }
 
 // SoapClient return new *Client to handle the requests with the WSDL
@@ -167,7 +168,7 @@ func (c *Client) Do(req *Request) (res *Response, err error) {
 	}
 
 	if c.Definitions.Services == nil {
-		return nil, errors.New("No Services found in wsdl definitions")
+		return nil, errors.New("no Services found in wsdl definitions")
 	}
 
 	p := &process{

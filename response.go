@@ -40,7 +40,7 @@ func IsFault(err error) bool {
 // Unmarshal get the body and unmarshal into the interface
 func (r *Response) Unmarshal(v interface{}) error {
 	if len(r.Body) == 0 {
-		return fmt.Errorf("Body is empty")
+		return fmt.Errorf("response body is empty")
 	}
 
 	var fault Fault

@@ -2,7 +2,6 @@ package gosoap
 
 import (
 	"crypto/tls"
-	"fmt"
 	"log"
 	"net/http"
 	"regexp"
@@ -185,14 +184,14 @@ func TestClient_Call(t *testing.T) {
 	}
 
 	c := &Client{}
-	res, err = c.Call("", Params{})
+	_, err = c.Call("", Params{})
 	if err == nil {
 		t.Errorf("error expected but nothing got.")
 	}
 
 	c.SetWSDL("://test.")
 
-	res, err = c.Call("checkVat", params)
+	_, err = c.Call("checkVat", params)
 	if err == nil {
 		t.Errorf("invalid WSDL")
 	}
@@ -204,7 +203,7 @@ func (c customLogger) LogRequest(method string, dump []byte) {
 	var re = regexp.MustCompile(`(<vatNumber>)[\s\S]*?(<\/vatNumber>)`)
 	maskedResponse := re.ReplaceAllString(string(dump), `${1}XXX${2}`)
 
-	log.Println(fmt.Sprintf("%s request: %s", method, maskedResponse))
+	log.Printf("%s request: %s\n", method, maskedResponse)
 }
 
 func (c customLogger) LogResponse(method string, dump []byte) {
@@ -212,7 +211,7 @@ func (c customLogger) LogResponse(method string, dump []byte) {
 		return
 	}
 
-	log.Println(fmt.Sprintf("Response: %s", dump))
+	log.Printf("Response: %s\n", dump)
 }
 
 func TestClient_Call_WithCustomLogger(t *testing.T) {
