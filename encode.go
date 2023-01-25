@@ -207,18 +207,17 @@ func (tokens *tokenData) startBody(m, n string) error {
 		},
 	}
 
-	if m == "" || n == "" {
-		return fmt.Errorf("method or namespace is empty")
-	}
-
 	r := xml.StartElement{
 		Name: xml.Name{
 			Space: "",
 			Local: m,
 		},
-		Attr: []xml.Attr{
+	}
+
+	if n != "" {
+		r.Attr = []xml.Attr{
 			{Name: xml.Name{Space: "", Local: "xmlns"}, Value: n},
-		},
+		}
 	}
 
 	tokens.data = append(tokens.data, b, r)
