@@ -45,8 +45,8 @@ func main() {
 		fmt.Sprintf("file://%s/../testdata/ipservice.wsdl", pwd),
 		client(),
 		&gosoap.Config{
-			Dump:            true,
-			PrefixOperation: true,
+			Dump:        true,
+			DisableRoot: true,
 		},
 	)
 

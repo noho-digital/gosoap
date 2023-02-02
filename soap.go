@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -47,6 +46,7 @@ type Config struct {
 	Dump            bool
 	Logger          DumpLogger
 	PrefixOperation bool
+	DisableRoot     bool
 }
 
 // SoapClient return new *Client to handle the requests with the WSDL
@@ -264,7 +264,7 @@ func (p *process) doRequest(url string) ([]byte, error) {
 
 	if resp.StatusCode < 200 || resp.StatusCode >= 400 {
 		if !(p.Client.config != nil && p.Client.config.Dump) {
-			_, err := io.Copy(ioutil.Discard, resp.Body)
+			_, err := io.Copy(io.Discard, resp.Body)
 			if err != nil {
 				return nil, err
 			}
@@ -272,7 +272,7 @@ func (p *process) doRequest(url string) ([]byte, error) {
 		return nil, errors.New("unexpected status code: " + resp.Status)
 	}
 
-	return ioutil.ReadAll(resp.Body)
+	return io.ReadAll(resp.Body)
 }
 
 func (p *process) httpClient() *http.Client {

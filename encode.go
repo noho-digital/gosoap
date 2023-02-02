@@ -44,7 +44,12 @@ func (c process) MarshalXML(e *xml.Encoder, _ xml.StartElement) error {
 		tokens.endHeader(c.Client.HeaderName)
 	}
 
-	err := tokens.startBody(c.Request.Method, namespace)
+	var m string
+	if !c.Client.config.DisableRoot {
+		m = c.Request.Method
+	}
+
+	err := tokens.startBody(m, namespace)
 	if err != nil {
 		return err
 	}
@@ -52,7 +57,7 @@ func (c process) MarshalXML(e *xml.Encoder, _ xml.StartElement) error {
 	tokens.recursiveEncode(c.Request.Params)
 
 	//end envelope
-	tokens.endBody(c.Request.Method)
+	tokens.endBody(m)
 	tokens.endEnvelope()
 
 	for _, t := range tokens.data {
@@ -207,20 +212,24 @@ func (tokens *tokenData) startBody(m, n string) error {
 		},
 	}
 
-	r := xml.StartElement{
-		Name: xml.Name{
-			Space: "",
-			Local: m,
-		},
-	}
+	tokens.data = append(tokens.data, b)
 
-	if n != "" {
-		r.Attr = []xml.Attr{
-			{Name: xml.Name{Space: "", Local: "xmlns"}, Value: n},
+	if m != "" {
+		r := xml.StartElement{
+			Name: xml.Name{
+				Space: "",
+				Local: m,
+			},
 		}
-	}
 
-	tokens.data = append(tokens.data, b, r)
+		if n != "" {
+			r.Attr = []xml.Attr{
+				{Name: xml.Name{Space: "", Local: "xmlns"}, Value: n},
+			}
+		}
+
+		tokens.data = append(tokens.data, r)
+	}
 
 	return nil
 }
@@ -234,12 +243,17 @@ func (tokens *tokenData) endBody(m string) {
 		},
 	}
 
-	r := xml.EndElement{
-		Name: xml.Name{
-			Space: "",
-			Local: m,
-		},
+	tokens.data = append(tokens.data, b)
+
+	if m != "" {
+		r := xml.EndElement{
+			Name: xml.Name{
+				Space: "",
+				Local: m,
+			},
+		}
+
+		tokens.data = append(tokens.data, r)
 	}
 
-	tokens.data = append(tokens.data, r, b)
 }
