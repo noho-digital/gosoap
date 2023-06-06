@@ -18,6 +18,7 @@ struct that has the following configuration options:
 - Logger (`DumpLogger`): Logger takes any type that implements the [`gosoap.DumpLogger`](https://github.com/Siteminds/gosoap/blob/master/soap.go#L29) interface. This is useful for wrapping Dump logs into your own logging solution (e.g. zap, logrus, zerolog, etc.)
 - PrefixOperation (`boolean`): by default gosoap generates an 'operation' root element in the SOAP Body, containing a `xmlns` namespace attribute. When setting `PrefixOperation = true`, the `xmlns` attribute is not added, allowing you to manually prefix the operation name in the `gosoap.Call()` with your own namespace prefix. You can add your own namespace prefix using `gosoap.SetCustomEnvelope()` (see example below).
 - DisableRoot (`boolean`): when set to true, this makes gosoap skip generating the operation root element entirely, allowing full control of the SOAP Body.
+- Endpoint (`string`): by default the first location of the first service port found in the WSDL is used. By defining the endpoint url in the configuration, this configured endpoint will be used instead of the one from the WSDL.
 
 ### Examples
 

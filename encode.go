@@ -236,15 +236,6 @@ func (tokens *tokenData) startBody(m, n string) error {
 
 // endToken close body of the envelope
 func (tokens *tokenData) endBody(m string) {
-	b := xml.EndElement{
-		Name: xml.Name{
-			Space: "",
-			Local: fmt.Sprintf("%s:Body", soapPrefix),
-		},
-	}
-
-	tokens.data = append(tokens.data, b)
-
 	if m != "" {
 		r := xml.EndElement{
 			Name: xml.Name{
@@ -256,4 +247,12 @@ func (tokens *tokenData) endBody(m string) {
 		tokens.data = append(tokens.data, r)
 	}
 
+	b := xml.EndElement{
+		Name: xml.Name{
+			Space: "",
+			Local: fmt.Sprintf("%s:Body", soapPrefix),
+		},
+	}
+
+	tokens.data = append(tokens.data, b)
 }

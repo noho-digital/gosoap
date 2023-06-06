@@ -47,6 +47,7 @@ type Config struct {
 	Logger          DumpLogger
 	PrefixOperation bool
 	DisableRoot     bool
+	Endpoint        string
 }
 
 // SoapClient return new *Client to handle the requests with the WSDL
@@ -186,7 +187,14 @@ func (c *Client) Do(req *Request) (res *Response, err error) {
 		return nil, err
 	}
 
-	b, err := p.doRequest(c.Definitions.Services[0].Ports[0].SoapAddresses[0].Location)
+	ep := c.Definitions.Services[0].Ports[0].SoapAddresses[0].Location
+
+	// Override if config endpoint was set 'hard'
+	if c.config != nil && c.config.Endpoint != "" {
+		ep = c.config.Endpoint
+	}
+
+	b, err := p.doRequest(ep)
 	if err != nil {
 		return nil, ErrorWithPayload{err, p.Payload}
 	}
