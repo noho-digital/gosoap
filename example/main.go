@@ -47,6 +47,7 @@ func main() {
 		&gosoap.Config{
 			Dump:            true,
 			PrefixOperation: true,
+			Endpoint:        "http://localhost:8080",
 		},
 	)
 
