@@ -90,6 +90,7 @@ type wsdlPort struct {
 	Name          string         `xml:"name,attr"`
 	Binding       string         `xml:"binding,attr"`
 	SoapAddresses []*soapAddress `xml:"http://schemas.xmlsoap.org/wsdl/soap/ address"`
+	SoapAddresses12 []*soapAddress `xml:"http://schemas.xmlsoap.org/wsdl/soap12/ address"`
 }
 
 type soapAddress struct {

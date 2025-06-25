@@ -187,7 +187,17 @@ func (c *Client) Do(req *Request) (res *Response, err error) {
 		return nil, err
 	}
 
-	ep := c.Definitions.Services[0].Ports[0].SoapAddresses[0].Location
+	ep := ""
+	switch {
+		case len(c.Definitions.Services[0].Ports[0].SoapAddresses12) > 0:
+			ep = c.Definitions.Services[0].Ports[0].SoapAddresses12[0].Location
+		default:
+			ep = c.Definitions.Services[0].Ports[0].SoapAddresses[0].Location
+	}
+
+	if ep == "" {
+		return nil, errors.New("no endpoint found in wsdl definitions")
+	}
 
 	// Override if config endpoint was set 'hard'
 	if c.config != nil && c.config.Endpoint != "" {
