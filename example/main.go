@@ -10,7 +10,7 @@ import (
 	"os"
 	"time"
 
-	"siteminds.dev/gosoap"
+	"github.com/noho-digital/gosoap"
 )
 
 // GetIPLocationResponse will hold the Soap response

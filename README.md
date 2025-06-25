@@ -5,7 +5,7 @@ package to help with SOAP integrations (client)
 ### Install
 
 ```bash
-go get siteminds.dev/gosoap
+go get github.com/noho-digital/gosoap
 ```
 
 ### Configuration Options
@@ -33,7 +33,7 @@ import (
 	"net/http"
 	"time"
 
-	"siteminds.dev/gosoap"
+	"github.com/noho-digital/gosoap"
 )
 
 // GetIPLocationResponse will hold the Soap response
@@ -100,7 +100,7 @@ import (
 	"net/http"
 	"time"
 
-	"siteminds.dev/gosoap"
+	"github.com/noho-digital/gosoap"
 )
 
 // GetIPLocationResponse will hold the Soap response
